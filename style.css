@@ -186,6 +186,114 @@ header {
     margin: 0;
 }
 
+
+/* =========================
+   CV — LIGHTBOX
+   ========================= */
+
+.name-button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+
+/* Fenêtre blanche */
+
+.cv-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+
+    display: none;
+
+    width: 100%;
+    height: 100%;
+
+    background: #ffffff;
+    color: #1b1b1b;
+
+    overflow-y: auto;
+
+    cursor: pointer;
+}
+
+.cv-lightbox.active {
+    display: block;
+}
+
+
+/* Grille identique à celle du header */
+
+.cv-layout {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr;
+
+    width: 100%;
+    min-height: 100%;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    gap: 0;
+}
+
+
+/* Colonnes */
+
+.cv-column {
+    min-width: 0;
+    text-align: left;
+}
+
+/* Troisième colonne alignée à droite */
+
+.cv-column:last-child {
+    text-align: right;
+}
+
+
+/* Typographie */
+
+.cv-column h2,
+.cv-column h3,
+.cv-column p {
+    font-family: "BBBBaskervvol", serif;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.1;
+}
+
+.cv-column h2,
+.cv-column h3 {
+    margin: 0;
+}
+
+.cv-column p {
+    margin: 0 0 4px;
+}
+
+
+/* Adaptation mobile */
+
+@media (max-width: 600px) {
+
+    .cv-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .cv-column:last-child {
+        text-align: left;
+    }
+
+}
+
 /* =========================
    LIGHTBOX
    ========================= */
@@ -242,7 +350,7 @@ header {
     background: none;
     border: none;
 
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
 
     font-family: "BBBBaskervvol";
     font-size: 24px;
@@ -326,7 +434,7 @@ header {
     color: #222;
 
     pointer-events: none;
-    z-index: 9999;
+    z-index: 10001;
 
     white-space: nowrap;
     user-select: none;
@@ -350,5 +458,14 @@ header {
 @media (hover: none), (pointer: coarse) {
     .custom-cursor {
         display: none;
+    }
+}
+
+/* Masquer le curseur système lorsque le CV est ouvert */
+
+@media (hover: hover) and (pointer: fine) {
+    #cv-lightbox.active,
+    #cv-lightbox.active * {
+        cursor: none !important;
     }
 }
