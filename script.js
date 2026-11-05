@@ -1,4 +1,6 @@
 const projects = document.querySelector('.projects');
+const header = document.querySelector('header');
+
 
 
 // SCROLL HORIZONTAL À LA SOURIS
@@ -18,6 +20,9 @@ if (window.matchMedia('(min-width: 769px)').matches) {
 
 // LIGHTBOX
 
+const cvLightbox = document.querySelector('#cv-lightbox');
+const cvTrigger = document.querySelector('#open-cv');
+
 const images = document.querySelectorAll('.project-image');
 
 const lightbox = document.querySelector('#lightbox');
@@ -27,6 +32,7 @@ const previousButton = document.querySelector('#lightbox-prev');
 const nextButton = document.querySelector('#lightbox-next');
 
 const counter = document.querySelector('#lightbox-counter');
+
 
 let currentImages = [];
 let currentIndex = 0;
@@ -178,7 +184,9 @@ document.addEventListener('keydown', (event) => {
 
 const customCursor = document.querySelector('.custom-cursor');
 
+
 document.addEventListener('mousemove', (event) => {
+
     if (!customCursor) return;
 
     // Position du curseur
@@ -194,28 +202,94 @@ document.addEventListener('mousemove', (event) => {
     // Valeur par défaut
     let cursorText = '*';
 
-    if (lightbox.classList.contains('active')) {
+    // CV ouvert : Exit partout
+    if (cvLightbox && cvLightbox.classList.contains('active')) {
+
+        cursorText = 'Exit';
+
+    }
+
+    // Lightbox des projets ouverte
+    else if (lightbox.classList.contains('active')) {
 
         // Sur l'image : fermer
-        if (target.closest('.lightbox-content')) {
+        if (target && target.closest('.lightbox-content')) {
             cursorText = 'Exit';
         }
 
-        // Sur la moitié gauche : image précédente
+        // À gauche : image précédente
         else if (event.clientX < window.innerWidth / 2) {
             cursorText = 'Left';
         }
 
-        // Sur la moitié droite : image suivante
+        // À droite : image suivante
         else {
             cursorText = 'Right';
         }
 
-    } else if (target.closest('.project-image')) {
+    }
 
-        // Sur une image de projet
+    // Survol du nom : Curriculum
+    else if (target && target.closest('header')) {
+
+        cursorText = 'Curriculum';
+
+    }
+
+    // Survol d'une image de projet
+    else if (target && target.closest('.project-image')) {
+
         cursorText = 'View';
+
     }
 
     customCursor.textContent = cursorText;
+
 });
+
+
+
+// =========================
+// LIGHTBOX CV
+// =========================
+
+
+
+if (cvLightbox && cvTrigger) {
+
+    // OUVRIR LE CV AU CLIC SUR LE HEADER
+header.addEventListener('click', (event) => {
+
+    event.preventDefault();
+
+    cvLightbox.classList.add('active');
+    cvLightbox.setAttribute('aria-hidden', 'false');
+
+});
+
+
+    // FERMER LE CV AU CLIC, PARTOUT
+    cvLightbox.addEventListener('click', () => {
+
+        cvLightbox.classList.remove('active');
+        cvLightbox.setAttribute('aria-hidden', 'true');
+
+    });
+
+
+    // FERMER AVEC ÉCHAP
+    document.addEventListener('keydown', (event) => {
+
+        if (
+            event.key === 'Escape' &&
+            cvLightbox.classList.contains('active')
+        ) {
+
+            cvLightbox.classList.remove('active');
+            cvLightbox.setAttribute('aria-hidden', 'true');
+
+        }
+
+    });
+
+}
